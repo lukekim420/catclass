@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from glob import glob
 import sounddevice as sd
-
+import os
 
 import tkinter as tk
 from tkinter import ttk
@@ -41,6 +41,7 @@ def ctft_to_peaks(carr : np.ndarray, threshold = 1, max_peak_num = 10):
 class Classify_manager:
     def __init__(self, file_path) -> None:
         #load file
+        self.train_path = file_path
         y, sr = librosa.load(file_path)
 
         #노이즈 제거
@@ -104,8 +105,8 @@ class Classify_manager:
         an, bn = librosa.frames_to_samples(a), librosa.frames_to_samples(b)
         sd.play(self.y[an:bn], samplerate=self.sr)
 
-    def savecut(self, path : str, index : int):
-        pass
+    def savecut(self, index : int):
+        os.system(("ffmpeg -y -ss " + str(librosa.frames_to_time(self.cutpoint_rising[index],sr=self.sr)) + " -t " + str(librosa.frames_to_time(self.cutpoint_falling[index],sr=self.sr)-librosa.frames_to_time(self.cutpoint_rising[index],sr=self.sr)) + " -i " +str(self.train_path)+" ./catclass/test/classifier_test/"+str(self.train_path.split('/')[-1].split(".")[0])+'_'+str(index)+".wav"))
 
 # Create the main window
 window = tk.Tk()
@@ -113,7 +114,7 @@ window.title("Cat Classifier")
 window.geometry("750x750")
 
 input_path_box = tk.Text(window, width=80, height=1)
-input_path_box.insert("1.0", './catclass/audioset-processing-master/output/meow')
+input_path_box.insert("1.0", './catclass/source/meow')
 input_path_box.pack()
 input_path_box.place(x=20, y=20)
 
@@ -138,6 +139,7 @@ def select_path_btn_pressed():
     nextfile_button['state']='enabled'
     playcut_button['state']='enabled'
     playall_button['state']='enabled'
+    savecut_button['state']='enabled'
 
     set_index_label()
     set_canvas()
@@ -207,6 +209,11 @@ playcut_button = ttk.Button(window, text="조각 재생", command=lambda : curre
 playcut_button.pack()
 playcut_button['state']='disabled'
 playcut_button.place(x=650, y=550)
+
+savecut_button = ttk.Button(window, text="조각 저장", command=lambda : currentmanager.savecut(index))
+savecut_button.pack()
+savecut_button['state']='disabled'
+savecut_button.place(x=650, y=600)
 
 # Start the Tkinter event loop
 window.mainloop()
