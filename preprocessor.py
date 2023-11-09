@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import os
 from glob import glob
 
-base_dir = './audioset-processing-master/output/meow'
+base_dir = './source/meow'
 train_folder = glob(base_dir)
 train_path = []
 for folder in train_folder:
@@ -30,7 +30,7 @@ def ctft_to_peaks(carr : np.ndarray, threshold = 1, max_peak_num = 10):
 
     return (rising, falling)
 
-print(len(train_path))
+print(218,len(train_path))
 for vidno in range(len(train_path)):
     try:
         y, sr = librosa.load(train_path[vidno])
