@@ -78,8 +78,12 @@ class Classify_manager:
             cutpoint_falling = np.append(cutpoint_falling, len(cnt_mat)-1)
 
         self.rising, self.falling = rising, falling
+        a, b = librosa.time_to_frames(0.3), librosa.time_to_frames(1.3)
 
-        self.cutpoint_falling, self.cutpoint_rising = cutpoint_falling,cutpoint_rising
+        temp = (cutpoint_falling - cutpoint_rising)
+        temp2=(a<temp) & (temp<b)
+        self.cutpoint_rising = cutpoint_rising[temp2]
+        self.cutpoint_falling = cutpoint_falling[temp2]
 
         self.cut_count = len(self.cutpoint_falling)
             
@@ -192,6 +196,7 @@ def nextfile_button_pressed():
     currentmanager = Classify_manager(all_files[fileindex])
     if fileindex == len(all_files):
         nextfile_button['state']='disabled'
+    nextcut_button['state']='enabled'
     set_canvas()
     set_index_label()
 
