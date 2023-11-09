@@ -90,8 +90,11 @@ for vidno in range(len(train_path)):
     if(cnt_mat[0] > thres):
         cutpoint_rising = np.insert(cutpoint_rising,0,0)
 
+    if len(cutpoint_rising)!=len(cutpoint_falling):
+        cutpoint_falling = cutpoint_falling[:-1]
+
     for i in range(len(cutpoint_rising)):
-        if (librosa.frames_to_time(cutpoint_falling[i],sr=sr)-librosa.frames_to_time(cutpoint_rising[i],sr=sr))>=0.3:
+        if 1.3>=(librosa.frames_to_time(cutpoint_falling[i],sr=sr)-librosa.frames_to_time(cutpoint_rising[i],sr=sr))>=0.3:
             #print(cutpoint_rising[i], cutpoint_falling[i])
             print(("ffmpeg -y -ss " + str(librosa.frames_to_time(cutpoint_rising[i],sr=sr)) + " -t " + str(librosa.frames_to_time(cutpoint_falling[i],sr=sr)-librosa.frames_to_time(cutpoint_rising[i],sr=sr)) + " -i " +str(train_path[vidno])+" ./dataset/meow/"+str(train_path[vidno].split('/')[-1].split(".")[0])+'_'+str(i)+".wav"))
             os.system(("ffmpeg -y -ss " + str(librosa.frames_to_time(cutpoint_rising[i],sr=sr)) + " -t " + str(librosa.frames_to_time(cutpoint_falling[i],sr=sr)-librosa.frames_to_time(cutpoint_rising[i],sr=sr)) + " -i " +str(train_path[vidno])+" ./dataset/meow/"+str(train_path[vidno].split('/')[-1].split(".")[0])+'_'+str(i)+".wav"))
