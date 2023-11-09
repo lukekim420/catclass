@@ -30,7 +30,7 @@ def ctft_to_peaks(carr : np.ndarray, threshold = 1, max_peak_num = 10):
 
     return (rising, falling)
 
-for vidno in range(218,len(train_path)):
+for vidno in range(223,len(train_path)):
     try:
         y, sr = librosa.load(train_path[vidno])
 
