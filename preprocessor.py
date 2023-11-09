@@ -11,7 +11,6 @@ from glob import glob
 
 base_dir = './audioset-processing-master/output/meow'
 train_folder = glob(base_dir)
-
 train_path = []
 for folder in train_folder:
     tmp = glob(folder + '/*')
@@ -31,7 +30,7 @@ def ctft_to_peaks(carr : np.ndarray, threshold = 1, max_peak_num = 10):
 
     return (rising, falling)
 
-
+print(len(train_path))
 for vidno in range(len(train_path)):
     try:
         y, sr = librosa.load(train_path[vidno])
@@ -101,4 +100,3 @@ for vidno in range(len(train_path)):
                 os.system(("ffmpeg -y -ss " + str(librosa.frames_to_time(cutpoint_rising[i],sr=sr)) + " -t " + str(librosa.frames_to_time(cutpoint_falling[i],sr=sr)-librosa.frames_to_time(cutpoint_rising[i],sr=sr)) + " -i " +str(train_path[vidno])+" ./dataset/meow/"+str(train_path[vidno].split('/')[-1].split(".")[0])+'_'+str(i)+".wav"))
     except:
         print("error at "+vidno+':'+train_path[vidno].split('/')[-1].split(".")[0])
-        continue
