@@ -91,7 +91,7 @@ for vidno in range(len(train_path)):
         cutpoint_rising = np.insert(cutpoint_rising,0,0)
 
     if len(cutpoint_rising)!=len(cutpoint_falling):
-        cutpoint_falling = cutpoint_falling[:-1]
+        cutpoint_rising = cutpoint_rising[:-1]
 
     for i in range(len(cutpoint_rising)):
         if 1.3>=(librosa.frames_to_time(cutpoint_falling[i],sr=sr)-librosa.frames_to_time(cutpoint_rising[i],sr=sr))>=0.3:
