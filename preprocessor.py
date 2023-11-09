@@ -98,4 +98,4 @@ for vidno in range(218,len(train_path)):
                 print(("ffmpeg -y -ss " + str(librosa.frames_to_time(cutpoint_rising[i],sr=sr)) + " -t " + str(librosa.frames_to_time(cutpoint_falling[i],sr=sr)-librosa.frames_to_time(cutpoint_rising[i],sr=sr)) + " -i " +str(train_path[vidno])+" ./dataset/meow/"+str(train_path[vidno].split('/')[-1].split(".")[0])+'_'+str(i)+".wav"))
                 os.system(("ffmpeg -y -ss " + str(librosa.frames_to_time(cutpoint_rising[i],sr=sr)) + " -t " + str(librosa.frames_to_time(cutpoint_falling[i],sr=sr)-librosa.frames_to_time(cutpoint_rising[i],sr=sr)) + " -i " +str(train_path[vidno])+" ./dataset/meow/"+str(train_path[vidno].split('/')[-1].split(".")[0])+'_'+str(i)+".wav"))
     except:
-        print("error at "+vidno+':'+train_path[vidno].split('/')[-1].split(".")[0])
+        print("error at "+str(vidno)+':'+str(train_path[vidno].split('/')[-1].split(".")[0]))
